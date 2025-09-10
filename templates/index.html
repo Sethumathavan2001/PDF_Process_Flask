@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Single Page - Process & Download</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 720px; margin: 40px auto; padding: 0 16px; }
+    label { display:block; margin-top: 12px; font-weight:600; }
+    select, input[type="text"] { width:100%; padding:8px; margin-top:6px; box-sizing:border-box; }
+    button { margin-top: 16px; padding:10px 16px; font-size:16px; cursor:pointer; }
+    #status { margin-top: 12px; color: #333; }
+  </style>
+</head>
+<body>
+  <h2>Process & Download PDF</h2>
+
+  <form id="mainForm" onsubmit="return false;">
+    <label for="month">Month</label>
+    <select id="month" name="month">
+      <option value="21">21</option>
+      <option value="30">30</option>
+      <option value="31">31</option>
+    </select>
+
+    <label for="chit">CHIT</label>
+    <input type="text" id="chit" name="chit" placeholder="Enter CHIT value" />
+
+    <div>
+      <button id="processBtn" type="button">Process</button>
+      <button id="downloadBtn" type="button" style="display:none;">Download PDF</button>
+    </div>
+
+    <div id="status"></div>
+  </form>
+
+  <script>
+    const processBtn = document.getElementById('processBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const statusDiv = document.getElementById('status');
+
+    let lastFileId = null;
+
+    processBtn.addEventListener('click', async () => {
+      const month = document.getElementById('month').value;
+      const chit = document.getElementById('chit').value.trim();
+
+      statusDiv.textContent = 'Processing...';
+      downloadBtn.style.display = 'none';
+
+      try {
+        const resp = await fetch('/process', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ month, chit })
+        });
+
+        const data = await resp.json();
+        if (!resp.ok || !data.success) {
+          statusDiv.textContent = 'Error: ' + (data.error || 'Unknown error');
+          return;
+        }
+
+        lastFileId = data.file_id;
+        statusDiv.textContent = 'Processing complete. Ready to download.';
+        downloadBtn.style.display = 'inline-block';
+      } catch (err) {
+        console.error(err);
+        statusDiv.textContent = 'Network error: ' + err.message;
+      }
+    });
+
+    downloadBtn.addEventListener('click', () => {
+      if (!lastFileId) {
+        alert('No file ready. Please press Process first.');
+        return;
+      }
+      // initiate download
+      window.location = `/download/${lastFileId}`;
+    });
+  </script>
+</body>
+</html>

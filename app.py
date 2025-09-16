@@ -70,7 +70,7 @@ cleanup_thread = threading.Thread(target=cleanup_task, daemon=True)
 cleanup_thread.start()
 
 # Register Tamil font (place TTF file in assets/fonts/)
-pdfmetrics.registerFont(TTFont('TamilFont', os.path.join(project_root,'fonts','vanavil Avvaiyar.ttf')))
+pdfmetrics.registerFont(TTFont('TamilFont', os.path.join(project_root,'fonts','vanavil_avvaiyar.ttf')))
 
 # Define a paragraph style for Tamil text
 tamil_style = ParagraphStyle(

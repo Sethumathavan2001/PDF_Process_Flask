@@ -1,0 +1,23 @@
+[
+  { "instalment": 1, "paid_before_collection": 6000, "received_in_installments": 120000 },
+  { "instalment": 2, "paid_before_collection": 6000, "received_in_installments": 120000, "paid_after_withdrawal": 7000 },
+  { "instalment": 3, "paid_before_collection": 6000, "received_in_installments": 121000, "paid_after_withdrawal": 7000 },
+  { "instalment": 4, "paid_before_collection": 6000, "received_in_installments": 122000, "paid_after_withdrawal": 7000 },
+  { "instalment": 5, "paid_before_collection": 6000, "received_in_installments": 123000, "paid_after_withdrawal": 7000 },
+  { "instalment": 6, "paid_before_collection": 6000, "received_in_installments": 124000, "paid_after_withdrawal": 7000 },
+  { "instalment": 7, "paid_before_collection": 6000, "received_in_installments": 125000, "paid_after_withdrawal": 7000 },
+  { "instalment": 8, "paid_before_collection": 6000, "received_in_installments": 126000, "paid_after_withdrawal": 7000 },
+  { "instalment": 9, "paid_before_collection": 6000, "received_in_installments": 127000, "paid_after_withdrawal": 7000 },
+  { "instalment": 10, "paid_before_collection": 6000, "received_in_installments": 128000, "paid_after_withdrawal": 7000 },
+  { "instalment": 11, "paid_before_collection": 6000, "received_in_installments": 129000, "paid_after_withdrawal": 7000 },
+  { "instalment": 12, "paid_before_collection": 6000, "received_in_installments": 130000, "paid_after_withdrawal": 7000 },
+  { "instalment": 13, "paid_before_collection": 6000, "received_in_installments": 131000, "paid_after_withdrawal": 7000 },
+  { "instalment": 14, "paid_before_collection": 6000, "received_in_installments": 132000, "paid_after_withdrawal": 7000 },
+  { "instalment": 15, "paid_before_collection": 6000, "received_in_installments": 133000, "paid_after_withdrawal": 7000 },
+  { "instalment": 16, "paid_before_collection": 6000, "received_in_installments": 134000, "paid_after_withdrawal": 7000 },
+  { "instalment": 17, "paid_before_collection": 6000, "received_in_installments": 135000, "paid_after_withdrawal": 7000 },
+  { "instalment": 18, "paid_before_collection": 6000, "received_in_installments": 136000, "paid_after_withdrawal": 7000 },
+  { "instalment": 19, "paid_before_collection": 6000, "received_in_installments": 137000, "paid_after_withdrawal": 7000 },
+  { "instalment": 20, "paid_before_collection": 6000, "received_in_installments": 138000, "paid_after_withdrawal": 7000 },
+  { "instalment": 21, "paid_before_collection": 6000, "received_in_installments": 140000, "paid_after_withdrawal": 7000 }
+]

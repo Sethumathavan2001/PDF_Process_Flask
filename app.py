@@ -1,51 +1,33 @@
 # app.py
 import os
 import uuid
-from datetime import datetime
-from flask import Flask, render_template, request, jsonify, send_from_directory, abort
-from reportlab.lib.pagesizes import A4
-from reportlab.pdfgen import canvas
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
-from reportlab.lib.pagesizes import A4
-from reportlab.lib import colors
-from reportlab.lib.units import inch
-from reportlab.lib.utils import ImageReader
-from datetime import datetime
-from reportlab.pdfgen import canvas
-import os
-from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import A4
-from reportlab.lib.utils import ImageReader
-from datetime import datetime
-import os
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
-from reportlab.lib.pagesizes import A4
-from reportlab.lib import colors
-from reportlab.lib.styles import getSampleStyleSheet
-from reportlab.lib.units import inch
-from reportlab.pdfgen.canvas import Canvas
-from datetime import datetime
-import os
-import os
+import json
 import threading
 import time
-import json
-from flask import Flask
+from datetime import datetime
+
+from flask import Flask, render_template, request, jsonify, send_from_directory, abort
+
+from reportlab.lib import colors
+from reportlab.lib.enums import TA_CENTER
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.units import inch
+from reportlab.lib.utils import ImageReader
+
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+
+from reportlab.pdfgen import canvas
+from reportlab.pdfgen.canvas import Canvas
+
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
+
+
 app = Flask(__name__)
 project_root = os.path.dirname(__file__)
 PDF_DIR = os.path.join(project_root, "generated_pdfs")
 os.makedirs(PDF_DIR, exist_ok=True)
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
-from reportlab.lib.pagesizes import A4
-from reportlab.lib import colors
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.lib.units import inch
-from reportlab.pdfgen.canvas import Canvas
-from reportlab.pdfbase import pdfmetrics
-from reportlab.pdfbase.ttfonts import TTFont
-import os
-from reportlab.pdfbase.ttfonts import TTFont
-from reportlab.lib.enums import TA_CENTER
 
 def empty_folder(folder_path):
     for filename in os.listdir(folder_path):
@@ -99,13 +81,15 @@ def draw_watermark_and_header(canvas: Canvas, doc):
         canvas.restoreState()
 
 def format_indian_number(n):
-    s = str(n)[::-1]
-    parts = [s[:3]]  # first 3 digits
-    s = s[3:]
-    while s:
-        parts.append(s[:2])
-        s = s[2:]
-    return ','.join(parts)[::-1]
+    if n:
+        s = str(int(n))[::-1]
+        parts = [s[:3]]  # first 3 digits
+        s = s[3:]
+        while s:
+            parts.append(s[:2])
+            s = s[2:]
+        return ','.join(parts)[::-1]
+    return n
 
 def make_pdf(filepath, month, chit, extra_text=None):
     # Save metadata for potential use in header/footer
@@ -141,9 +125,9 @@ def make_pdf(filepath, month, chit, extra_text=None):
         # data.append(["Sethu"] * 4)
         data.append([
     i.get('instalment', ""),
-    format_indian_number(i.get('paid_before_collection', "") * int(chit)),
-    format_indian_number(i.get('received_in_installments', "") * int(chit)),
-    format_indian_number(i.get('paid_after_withdrawal', "") * int(chit))
+    format_indian_number(i.get('paid_before_collection', "") * float(chit)),
+    format_indian_number(i.get('received_in_installments', "") * float(chit)),
+    format_indian_number(i.get('paid_after_withdrawal', "") * float(chit) if i.get('paid_after_withdrawal', "") else "")
 ])
 
 
@@ -176,7 +160,9 @@ def make_pdf(filepath, month, chit, extra_text=None):
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
     ])
-
+    if chit=="21":
+        for i, row in enumerate(data):
+            style.add('FONTSIZE', (0, i), (-1, i), 20)
     table.setStyle(style)
     elements.append(table)
 
